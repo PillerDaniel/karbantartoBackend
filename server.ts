@@ -16,7 +16,7 @@ const corsOptions: cors.CorsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-app.get('/api', (_req: Request, res: Response) => {
+app.get('/api', (req: Request, res: Response) => {
     res.send('API running');
 });
 
