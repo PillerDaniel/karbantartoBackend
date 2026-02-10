@@ -3,6 +3,8 @@ import type { Request, Response } from 'express';
 import config from 'config';
 import cors from 'cors';
 
+import connectDB from './utils/connectDB';
+
 const PORT = config.get<number>('PORT');
 const app: any = express();
 
@@ -13,13 +15,19 @@ const corsOptions: cors.CorsOptions = {
     credentials: true,
 };
 
-app.use(cors(corsOptions));
-app.use(express.json());
+const startServer = async () => {
+    await connectDB();
 
-app.get('/api', (req: Request, res: Response) => {
-    res.send('API running');
-});
+    app.use(cors(corsOptions));
+    app.use(express.json());
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+    app.get('/api', (req: Request, res: Response) => {
+        res.send('API running');
+    });
+
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+};
+
+startServer();
